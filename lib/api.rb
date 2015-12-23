@@ -2,12 +2,9 @@ require 'net/http'
 require 'json'
 require 'nokogiri'
 require 'yaml'
-# require_relative 'msg'
 
 
 class Api
-  # attr_accessor :email, :password
-
   def initialize
     config = YAML.load_file('config.yml')
     @email = config['email']
@@ -20,6 +17,7 @@ class Api
     @https = Net::HTTP.new(uri.host, uri.port)
     @https.use_ssl = true
     @https.read_timeout = 3600
+
 
     req = Net::HTTP::Post.new(uri.path)
     req['Content-Type'] = 'application/json'
@@ -42,23 +40,20 @@ class Api
     event_horizon = 0
     loop do
       begin
-        req = Net::HTTP::Post.new(poll_uri.path)
-        req['Content-Type'] = 'application/json'
-        req['Cookie'] = @cookie
-        req.body = { event_horizon: event_horizon, wait: true, ticket: @ticket, poll_flags: ['skip_rest'] }.to_json
-        res = @https.request(req)
-        result = JSON.parse(res.body)
-        event_horizon = result['event_horizon']
+        result = request('https://fleep.io/api/account/poll', {
+          event_horizon: event_horizon, wait: true, poll_flags: ['skip_rest']
+        })
 
+        event_horizon = result['event_horizon']
+        # listen for only messages
         messages = result['stream'].select { |x| x['mk_rec_type'] == 'message' }
-        # messages = result['stream']
         messages.each do |raw_msg|
           yield(raw_msg)
         end
       rescue => e
         # If there is a problem with the request e.g timeout, wait for 5 seconds and then try again
         puts "DEBUG: #{e}"
-        puts "DEBUG: #{e.backtrace}"
+        puts "DEBUG: #{e.backtrace.join("\n")}"
         sleep 5
       end
     end
@@ -80,19 +75,7 @@ class Api
 
   def send_message(conv_id, msg)
     puts "INFO: Sending message to conversation #{conv_id}..."
-    message_uri = URI("https://fleep.io/api/message/send/#{conv_id}")
-    req = Net::HTTP::Post.new(message_uri.path)
-    req['Content-Type'] = 'application/json'
-    req['Cookie'] = @cookie
-    req.body = { message: msg, ticket: @ticket }.to_json
-
-    res = @https.request(req)
-    if res.code == '200'
-      puts 'INFO: Message sent.'
-    else
-      puts 'ERROR: Failed to send the message.'
-      puts "ERROR: #{res.body}"
-    end
+    request("https://fleep.io/api/message/send/#{conv_id}", message: msg)
   end
 
   private
