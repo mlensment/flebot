@@ -1,16 +1,16 @@
 # Flebot is a [Fleep](https://fleep.io) bot written in Ruby
 Flebot listens to all the Fleep chats and when it recognizes a specific pattern, the message is passed into an app.  
 
-Standard pattern for passing messages from Fleep to Flebot is:
+Standard pattern for passing messages from Fleep to Flebot is:  
 `flebot weather tomorrow at 2:30`
 
-`flebot` - keyword for Flebot to parse the message
-`weather` - app name
+`flebot` - keyword for Flebot to parse the message  
+`weather` - app name  
 `tomorrow at 2:30` - arguments for the app
 
 
 ## Apps
-Flebot integrates with apps. Apps are regular rubygems and they must implement specific interface and should have their own tests.  
+Flebot integrates with apps. Apps are regular rubygems and they must implement specific interface and should have their own tests.
 App example can be found [here](https://github.com/mlensment/flebot-example/)  
 
 Arguments passed into an app are:
