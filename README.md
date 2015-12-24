@@ -2,7 +2,9 @@
 Flebot listens to all the Fleep chats and when it recognizes a specific pattern, the message is passed into an app.  
 
 Standard pattern for passing messages from Fleep to Flebot is:  
-`flebot weather tomorrow at 2:30`
+```
+flebot weather tomorrow at 2:30
+```
 
 `flebot` - keyword for Flebot to parse the message  
 `weather` - app name  
