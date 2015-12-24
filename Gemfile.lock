@@ -1,5 +1,6 @@
-PATH
-  remote: ../flebot-books
+GIT
+  remote: git@github.com:mlensment/flebot-books.git
+  revision: a1c36796482fccaccddcc6d181c5f1391522f65d
   specs:
     flebot-books (0.0.0)
       sqlite3 (= 1.3.11)

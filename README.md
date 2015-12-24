@@ -1,24 +1,16 @@
 # Flebot is a [Fleep](https://fleep.io) bot written in Ruby
-Flebot listens to all the Fleep chats and when it recognizes a specific pattern, the message is passed into an app.  
+Flebot listens to all the Fleep chats and when it recognizes a specific pattern (command), the message along with some arguments is passed into an App.  
 
-Standard pattern for passing messages from Fleep to Flebot is:  
+Command example:
 ```
 flebot weather tomorrow at 2:30
 ```
 
 `flebot` - keyword for Flebot to parse the message  
 `weather` - app name  
-`tomorrow at 2:30` - arguments for the app
+`tomorrow at 2:30` - rest of the message
 
-
-## Apps
-Flebot integrates with apps. Apps are regular rubygems and they must implement specific interface and should have their own tests.
-App example can be found [here](https://github.com/mlensment/flebot-books/)  
-
-Arguments passed into an app are:
-* The message itself
-* Email + handle of the user who sent the message
-* List of chat members' emails with corresponding fleep handles
+To see which arguments are passed into an App, see [below](https://github.com/mlensment/flebot/#apps).
 
 ## Requirements
 Make sure you have Ruby 2.2.3 installed.
@@ -31,6 +23,23 @@ bundle
 ```
 
 Rename `config-example.yml` to `config.yml` and configure username and password.
+
+## Apps
+Flebot integrates with Apps. Apps are regular rubygems and they must implement specific [interface](spec/app_spec.rb) and should have their own functional tests.
+App example can be found [here](https://github.com/mlensment/flebot-books/)  
+
+Arguments passed into an app are:
+* The message itself
+* Email + handle of the user who sent the message
+* List of chat members' emails with corresponding fleep handles
+
+### Testing your App interface within Flebot
+To test your App interface add the gem to Flebot's Gemfile and install it, then run app spec:
+```
+rspec spec/app_spec.rb
+```
+
+If tests pass, your App interface is compatible with Flebot standard.
 
 ## Usage
 Start the robot in development mode:
