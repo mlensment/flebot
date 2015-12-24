@@ -17,8 +17,8 @@ App example can be found [here](https://github.com/mlensment/flebot-books/)
 
 Arguments passed into an app are:
 * The message itself
-* Email of the user who sent the message
-* List of chat members' emails
+* Email + handle of the user who sent the message
+* List of chat members' emails with corresponding fleep handles
 
 ## Requirements
 Make sure you have Ruby 2.2.3 installed.
@@ -41,4 +41,6 @@ For prodcution, pass `FLEBOT_ENV=prodcution` as well.
 Open Fleep and type `flebot` into one of your chats. Flebot should display some help into that same chat.
 
 ## Running tests
-`rspec`
+```
+rspec
+```
