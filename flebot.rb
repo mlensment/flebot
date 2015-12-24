@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
+ENV['FLEBOT_ENV'] ||= 'development'
+
 require_relative 'lib/api'
 require 'bundler'
-# env = ARGV.include?('--dev') ? :develpment : ''
-Bundler.require(:default)
-
-# Dir[File.dirname(__FILE__) + '/lib/**/*.rb'].each { |file| require file }
+Bundler.require(:default, ENV['FLEBOT_ENV'])
 
 class Flebot
   class << self
@@ -38,7 +37,7 @@ class Flebot
     def find_app(msg_body)
       app_name = msg_body.split(' ')[1]
       klass = Object.const_get("Flebot::#{app_name.capitalize}")
-      klass.to_s.split("::").first == 'Flebot' ? klass : nil
+      klass.name.to_s.split("::").first == 'Flebot' ? klass : nil
       rescue NameError
         nil
     end

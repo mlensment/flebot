@@ -1,24 +1,42 @@
 # Flebot is a [Fleep](https://fleep.io) bot written in Ruby
-This repository contains an example how to integrate with Fleep API by using Ruby.
-The bot monitors chats and detects when someone types in a specific pattern.
-When this happens, Flebot will send a message to that chat.
+Flebot listens to all the Fleep chats and when it recognizes a specific pattern, the message is passed into an app.  
 
-By default, the pattern is `test`.
+Standard pattern for passing messages from Fleep to Flebot is:
+`flebot weather tomorrow at 2:30`
+
+`flebot` - keyword for Flebot to parse the message
+`weather` - app name
+`tomorrow at 2:30` - arguments for the app
+
+
+## Apps
+Flebot integrates with apps. Apps are regular rubygems and they must implement specific interface and should have their own tests.  
+App example can be found [here](https://github.com/mlensment/flebot-example/)  
+
+Arguments passed into an app are:
+* The message itself
+* Email of the user who sent the message
+* List of chat members' emails
 
 ## Requirements
 Make sure you have Ruby 2.2.3 installed.
 
 ## Setup
 ```
-git clone git@github.com:mlensment/flebot-example.git && cd flebot-example
+git clone git@github.com:mlensment/flebot.git && cd flebot
 gem install bundler
 bundle
 ```
 
-Open `flebot.rb` and configure username, password and the pattern you want to match.
+Rename `config-example.yml` to `config.yml` and configure username and password.
 
 ## Usage
-Execute the script:
-`./flebot.rb`
+Start the robot in development mode:
+`ruby flebot.rb --start`
 
-Open Fleep and type your pattern (test) into a chat of your choice, the bot should respond with a message.
+For prodcution, pass `FLEBOT_ENV=prodcution` as well.
+
+Open Fleep and type `flebot` into one of your chats. Flebot should display some help into that same chat.
+
+## Running tests
+`rspec`
