@@ -1,8 +1,5 @@
 require 'net/http'
-require 'json'
-require 'nokogiri'
 require 'yaml'
-
 
 class Api
   def initialize

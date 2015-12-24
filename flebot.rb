@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
-require 'pry'
-Dir[File.dirname(__FILE__) + '/lib/**/*.rb'].each { |file| require file }
+require_relative 'lib/api'
+require 'bundler'
+# env = ARGV.include?('--dev') ? :develpment : ''
+Bundler.require(:default)
+
+# Dir[File.dirname(__FILE__) + '/lib/**/*.rb'].each { |file| require file }
 
 class Flebot
   class << self
@@ -33,14 +37,14 @@ class Flebot
 
     def find_app(msg_body)
       app_name = msg_body.split(' ')[1]
-
-      app_files = Dir.entries('lib/apps').select { |f| f.end_with?('.rb') }
-      app_names = app_files.map { |x| x.gsub('.rb', '') }
-      return unless app_names.include?(app_name)
-
-      Object.const_get(app_name.capitalize)
+      klass = Object.const_get("Flebot::#{app_name.capitalize}")
+      klass.to_s.split("::").first == 'Flebot' ? klass : nil
+      rescue NameError
+        nil
     end
   end
 end
 
-Flebot.listen
+if ARGV.include?('--start')
+  Flebot.listen
+end
