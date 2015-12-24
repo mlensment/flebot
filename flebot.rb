@@ -12,7 +12,7 @@ class Flebot
     end
 
     def listen
-      puts 'INFO: Starting Flebot'
+      log 'INFO: Starting Flebot'
       api = Api.new
       api.poll_messages do |raw_msg|
         conv_id = raw_msg['conversation_id']
@@ -42,6 +42,10 @@ class Flebot
         nil
     end
   end
+end
+
+def log(msg)
+  puts msg if ENV['FLEBOT_ENV'] != 'test'
 end
 
 if ARGV.include?('--start')
