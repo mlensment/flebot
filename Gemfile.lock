@@ -1,3 +1,9 @@
+GIT
+  remote: git@github.com:mlensment/flebot-books.git
+  revision: f73d6ba27b7f0afb0853c6591c440392a8129aab
+  specs:
+    flebot-books (0.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -31,6 +37,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  flebot-books!
   json (= 1.8.3)
   nokogiri (= 1.6.7.1)
   pry (= 0.10.3)
