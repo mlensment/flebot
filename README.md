@@ -11,7 +11,7 @@ Standard pattern for passing messages from Fleep to Flebot is:
 
 ## Apps
 Flebot integrates with apps. Apps are regular rubygems and they must implement specific interface and should have their own tests.
-App example can be found [here](https://github.com/mlensment/flebot-example/)  
+App example can be found [here](https://github.com/mlensment/flebot-books/)  
 
 Arguments passed into an app are:
 * The message itself
