@@ -61,13 +61,17 @@ class Api
     member_uuids = result['header']['members']
 
     members = []
-    member_uuids.each { |x| members << get_contact_email(x) }
+    member_uuids.each { |x| members << get_contact_email_and_handle(x) }
     members
   end
 
-  def get_contact_email(contact_id)
+  def get_contact_email_and_handle(contact_id)
     result = request('https://fleep.io/api/contact/sync', { contact_id: contact_id })
-    result['email']
+    if result['fleep_address']
+      { result['email'] => "@#{result['fleep_address']}"  }
+    else
+      { result['email'] => "@#{result['email'].split('@').first}"  }
+    end
   end
 
   def send_message(conv_id, msg)

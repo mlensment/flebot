@@ -25,7 +25,7 @@ class Flebot
           next
         end
 
-        sender = api.get_contact_email(raw_msg['account_id'])
+        sender = api.get_contact_email_and_handle(raw_msg['account_id'])
         members = api.get_conversation_members(conv_id)
 
         app = app_class.new(msg_body, sender, members)
