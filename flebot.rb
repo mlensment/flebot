@@ -8,7 +8,10 @@ Bundler.require(:default, ENV['FLEBOT_ENV'])
 class Flebot
   class << self
     def help
-      'show flebot help here'
+      apps = Flebot.constants.map(&Flebot.method(:const_get)).grep(Class)
+      apps.map! { |x| x.name.to_s.gsub('Flebot::', '').downcase }
+      return "Hello, I am Flebot. I currently have the following Apps: #{apps.join(', ')}\n"\
+      "Launch the application by typing 'flebot [app name]'"
     end
 
     def listen
