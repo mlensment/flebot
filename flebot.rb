@@ -5,6 +5,14 @@ require_relative 'lib/api'
 require 'bundler'
 Bundler.require(:default, ENV['FLEBOT_ENV'])
 
+$logger = Logging.logger['default']
+$logger.level = :info
+if ENV['FLEBOT_ENV'] == 'development'
+  $logger.add_appenders Logging.appenders.stdout
+elsif ENV['FLEBOT_ENV'] == 'production'
+  $logger.add_appenders Logging.appenders.file("log/#{ENV['FLEBOT_ENV']}.log")
+end
+
 class Flebot
   class << self
     def help
@@ -15,7 +23,7 @@ class Flebot
     end
 
     def listen
-      log 'INFO: Starting Flebot'
+      $logger.info 'Starting Flebot'
       api = Api.new
       api.poll_messages do |raw_msg|
         conv_id = raw_msg['conversation_id']
@@ -45,10 +53,6 @@ class Flebot
         nil
     end
   end
-end
-
-def log(msg)
-  puts msg if ENV['FLEBOT_ENV'] != 'test'
 end
 
 if ARGV.include?('--start')

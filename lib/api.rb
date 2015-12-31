@@ -22,8 +22,8 @@ class Api
 
     res = @https.request(req)
     if res.code != '200'
-      log 'ERROR: Login failed.'
-      log "ERROR: #{res.body}"
+      $logger.error 'Login failed.'
+      $logger.error "#{res.body}"
       exit
     end
 
@@ -49,8 +49,8 @@ class Api
         end
       rescue => e
         # If there is a problem with the request e.g timeout, wait for 5 seconds and then try again
-        log "DEBUG: #{e}"
-        log "DEBUG: #{e.backtrace.join("\n")}"
+        $logger.error "#{e}"
+        $logger.error "#{e.backtrace.join("\n")}"
         sleep 5
       end
     end
@@ -75,7 +75,7 @@ class Api
   end
 
   def send_message(conv_id, msg)
-    log "INFO: Sending message to conversation #{conv_id}..."
+    $logger.info "Sending message to conversation #{conv_id}..."
     request("https://fleep.io/api/message/send/#{conv_id}", message: msg)
   end
 
@@ -91,8 +91,8 @@ class Api
     if res.code == '200'
       return JSON.parse(res.body)
     else
-      log 'ERROR: Failed to query the API.'
-      log "ERROR: #{res.body}"
+      $logger.error 'Failed to query the API.'
+      $logger.error "#{res.body}"
     end
   end
 end
