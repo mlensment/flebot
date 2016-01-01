@@ -73,8 +73,9 @@ task :deploy => :environment do
   end
 
   to :after_hook do
-    queue! "echo '-----> Stopping';ssh yellow 'kill $(ps -fu deployer | grep \"[f]lebot.rb\" | awk \"{print \$2}\")'"
-    queue! 'echo "-----> Starting";ssh -n yellow \'export PATH="$HOME/.rbenv/bin:$PATH";eval "$(rbenv init -)";cd /home/deployer/projects/flebot/current;FLEBOT_ENV=production nohup ruby flebot.rb --start > /dev/null 2>&1 &\''
+    queue! "echo '-----> Stopping';ssh #{domain} 'kill \$(pgrep -f flebot.rb)'"
+    queue! 'echo "-----> Starting";ssh -n ' + domain + ' \'export PATH="$HOME/.rbenv/bin:$PATH";eval "$(rbenv init -)";'\
+           'cd ' + deploy_to + '/' + current_path + ';FLEBOT_ENV=production nohup ruby flebot.rb --start > /dev/null 2>&1 &\''
   end
 end
 
