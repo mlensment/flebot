@@ -3,7 +3,7 @@ gem 'nokogiri', '1.6.7.1'
 gem 'json', '1.8.3'
 gem 'logging', '2.0'
 
-gem 'flebot-books', git: 'git@github.com:mlensment/flebot-books.git'
+gem 'flebot-books', '0.0.1', git: 'git@github.com:mlensment/flebot-books.git'
 # gem 'flebot-books', path: '../flebot-books'
 group :test, :development do
   gem 'pry', '0.10.3'
