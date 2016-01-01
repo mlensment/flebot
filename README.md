@@ -45,7 +45,13 @@ If tests pass, your App interface is compatible with Flebot standard.
 Start the robot in development mode:
 `ruby flebot.rb --start`
 
-For prodcution, pass `FLEBOT_ENV=prodcution` as well.
+To run the bot in production configuration, prepend `FLEBOT_ENV=production` to the command.
+
+## Deployment
+You can use whatever deployment tool you want, but [Mina](https://github.com/mina-deploy/mina) is used by default. Follow their user guide to set up your project. Refer to [deployment configuration](config/deploy.rb) to see the example configuration. Note that the restart task is actually run locally and in different ssh session since it's started with `nohup`.
+
+### Shared paths
+In default configuration shared paths are directories app-data and log and file config.yml, that mean those paths are not overwritten on deploy.
 
 Open Fleep and type `flebot` into one of your chats. Flebot should display some help into that same chat.
 
