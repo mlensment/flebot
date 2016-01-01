@@ -70,20 +70,12 @@ task :deploy => :environment do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'deploy:cleanup'
-
-    to :launch do
-      puts "nohup ruby #{deploy_to}/#{current_path}/flebot.rb --start FLEBOT_ENV=production &> #{deploy_to}/#{current_path}/log/production.log &"
-      # queue "nohup #{deploy_to}/#{current_path}/flebot.rb --start FLEBOT_ENV=production &> #{deploy_to}/#{current_path}/log/production.log &"
-    end
   end
-end
 
-task :start do
-  queue! "kill $(ps -fu deployer | grep '[f]lebot.rb' | awk '{print $2}')"
-end
-
-task :stop do
-  queue! "kill $(ps -fu deployer | grep '[f]lebot.rb' | awk '{print $2}')"
+  to :after_hook do
+    queue! "echo '-----> Stopping';ssh yellow 'kill $(ps -fu deployer | grep \"[f]lebot.rb\" | awk \"{print \$2}\")'"
+    queue! 'echo "-----> Starting";ssh -n yellow \'export PATH="$HOME/.rbenv/bin:$PATH";eval "$(rbenv init -)";cd /home/deployer/projects/flebot/current;FLEBOT_ENV=production nohup ruby flebot.rb --start > /dev/null 2>&1 &\''
+  end
 end
 
 # For help in making your deploy script, see the Mina documentation:
